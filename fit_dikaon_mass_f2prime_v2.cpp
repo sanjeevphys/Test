@@ -4,7 +4,6 @@
 //     details of file specific: copied the file fit_dikaon_mass_f2prime_v2.cpp and editing is going 
 //      date : 28 November 2018 v2
 //*******************************************************************************************************
-
 #include <TLatex.h>
 #include <TString.h>
 #include <TLegend.h>
@@ -41,9 +40,9 @@ void fit_dikaon_mass_f2prime_v2(){
   ////  RooRealVar Q2("Q2","dimuon inv mass squared", 0.5, 20.);
   RooRealVar Triggers("Triggers","",0,1);
 
-  //RooArgSet vars(Bmass,Mumumass,Phimass,Kmpt,Kppt,Kmtrkdcasigbs,Kptrkdcasigbs,Bpt,Bvtxcl);
-  RooArgSet vars(Bmass,Mumumass,Phimass,Kmpt,Kppt,Bpt,Bvtxcl);
-  vars.add(RooArgSet(Bctau,Bcosalphabs2d,Blxysig,Triggers,Mumumasserr));
+
+  RooArgSet vars(Bmass,Mumumass,Phimass,Kmpt,Kppt,Kmtrkdcasigbs, Kptrkdcasigbs);
+  vars.add(RooArgSet(Blxysig,Triggers,Mumumasserr,Bpt,Bvtxcl,Bctau,Bcosalphabs2d));
 
   ////RooDataSet data("data","dataset with Bmass", ch, RooArgSet(Q2, Bmass, Mumumass, Mumumasserr, Triggers));  
   RooDataSet data("data","dataset with Bmass", ch, vars);  
@@ -60,16 +59,17 @@ void fit_dikaon_mass_f2prime_v2(){
   /////if (decayMode=decayMode[1]) TCut c3 = "Phimass>1.4 && Phimass<1.7";
   ///if (decayMode=decayMode[0]) TCut c3 = "Phimass>1.01 && Phimass<1.03";
   //TCut c3 = "Phimass>1.01 && Phimass<1.03";
-  TCut c4 = "Kmpt>.8 && Kppt>.8";
-  //TCut c5 = "Kmtrkdcasigbs > 0.8 && Kptrkdcasigbs > 0.8";
+
+  TCut c4 = "Kmpt> 0.8 && Kppt> 0.8";
+  TCut c5 = "Kmtrkdcasigbs > 0.8 && Kptrkdcasigbs > 0.8";
   TCut c6 = "Bpt>10";
-  TCut c7 = "Bvtxcl>0.01";
-  TCut c8 = "abs(Bctau)>0.02";
+  TCut c7 = "Bvtxcl>0.02";
+  TCut c8 = "abs(Bctau)>0.01";
   TCut c9 = "Bcosalphabs2d>0.9987";
   TCut c10 = "Blxysig>8.5";
   TCut c11 = "Triggers==1";
 
-  TCut cutTotal = c1 && c2 && c3 && c4 && c6 && c7 && c8 && c9 && c10 && c11;
+  TCut cutTotal = c1 && c2 && c3 && c4 && c5 && c6 && c7 && c8 && c9 && c10 && c11;
 
   RooDataSet *redData = (RooDataSet*)data.reduce(cutTotal);
   ///RooDataSet *redData = (RooDataSet*)data.reduce(c1&&c2);
@@ -77,27 +77,26 @@ void fit_dikaon_mass_f2prime_v2(){
 
   RooRealVar  mean("mean","mean of the gaussians", 1.525, 1.4, 1.7);
   //RooRealVar  mean("mean","mean of the gaussians", 1.0, 2.1);
-  RooRealVar  sigma("sigma","sigma of the gaussian", 0., 1.);
+  RooRealVar  sigma("sigma","sigma of the gaussian", 0.0, 1.);
   //RooRealVar  sigma2("sigma2","sigma of the gaussian2", 0.2, 0., 1.);
-  RooRealVar  width("width","width", 0.05, 0., 1.);
+  RooRealVar  width("width","width", 0.05, 0., 2.);
   //RooGaussian  sigG("sigG","signal component-1", Phimass, mean, sigma);
   RooVoigtian  sigG("sigG","signal component-1", Phimass, mean, width, sigma);
   //RooBreitWigner  sigG("sigG","signal component-1", Phimass, mean, sigma);
   //RooGaussian  sigG2("sigG2","signal component-2", Phimass, mean, sigma2);
   //RooRealVar sigM_frac("sigM_frac","fraction of Gaussians", 0.8, 0., 1.);
   //RooAddPdf sigG("sigG","sigG", RooArgList(sigG1,sigG2), RooArgList(sigM_frac) );
-
-
-
   
-  RooRealVar lambda("lambda","slope", -7.5, -30., 0.);
+  //RooRealVar lambda("lambda","slope", -1.5, -20., 0.);
   //RooExponential bkgE("bkgE","exponential PDF", Phimass, lambda);
   //RooExponential bkgC("bkgC","exponential PDF", Phimass, lambda);
 
-
-  RooRealVar a0("a0", "constant", -10., 10.);
+  /*RooRealVar a0("a0", "constant", -10., 10.);
   RooRealVar a1("a1", "linear", -10., 10.);
-  RooRealVar a2("a2", "quadratic", 0.1, -2., 10.);
+  RooRealVar a2("a2", "quadratic", 10., 10.);*/
+  RooRealVar a0("a0", "constant", -.52);//, 10.);
+  RooRealVar a1("a1", "linear", -.01);//, 1.);
+  RooRealVar a2("a2", "quadratic", -.028);//, 2.);
   RooChebychev bkgC("bkgC", "Background", Phimass, RooArgSet(a0, a1, a2));
   //RooChebychev bkgC("bkgC", "Background", Phimass, RooArgSet(a0, a1));
   //RooRealVar a0("a0", "constant", 10000);//, 1000, 1.e5);
@@ -105,15 +104,12 @@ void fit_dikaon_mass_f2prime_v2(){
   //RooPolynomial bkgC("bkgC", "Background", Phimass, RooArgSet(a0, a1));
   //RooPolynomial bkgC("bkgC", "Background", Phimass, RooArgSet(a0));
 
-
   RooRealVar nsigG("nsigG","signal events", 2000, 0, 1E7);
   //RooRealVar nbkgE("nbkgE","number of exponential bkg events", 8000, 0, 1E7);
   RooRealVar nbkgC("nbkgC","number of chebychev pol. bkg events", 8000, 0, 1E7);
   //RooRealVar nbkgG1("nbkgG1","number of gaussian1 bkg events", 1000, 0, 1E7);
   //RooRealVar nbkgG2("nbkgG2","number of gaussian2 bkg events", 2000, 0, 1E7);
   
-  
-
   //RooAddPdf model("model","g+e+g+g", RooArgList(sigG,bkgExpo,bkgGau1,bkgGau2), RooArgList(nsigG,nbkgE,nbkgG1,nbkgG2) );
   //RooAddPdf model("model","g+e+g+g", RooArgList(sigG,bkgC,bkgGau1,bkgGau2), RooArgList(nsigG,nbkgC,nbkgG1,nbkgG2) );
   RooAddPdf model("model","g+c", RooArgList(sigG,bkgC), RooArgList(nsigG,nbkgC) );
@@ -168,15 +164,17 @@ void fit_dikaon_mass_f2prime_v2(){
   paveText->AddText(Form("Bkg. Yield  = %.0f #pm %.0f evts", nbkgC.getVal(), nbkgC.getError()));
   //paveText->AddText(Form("Bkg. Yield  = %.0f #pm %.0f", nbkgE.getVal(), nbkgE.getError()));
   paveText->AddText(Form("mean  = %.4f #pm %.4f GeV/c^{2}" , mean.getVal() , mean.getError()));
-  paveText->AddText(Form("sigma = %.4f #pm %.4f GeV/c^{2}" , sigma.getVal(), sigma.getError()));                                  
+  paveText->AddText(Form("sigma = %.4f #pm %.4f GeV/c^{2}" , sigma.getVal(), sigma.getError()));
+  paveText->AddText(Form("width = %.4f #pm %.4f GeV/c^{2}" , width.getVal(), width.getError()));
+  paveText->AddText(Form("a_{0} = %.4f #pm %.4f GeV/c^{2}" , a0.getVal(), a0.getError()));
+  paveText->AddText(Form("a_{1} = %.4f #pm %.4f GeV/c^{2}" , a1.getVal(), a1.getError()));
+  paveText->AddText(Form("a_{2} = %.4f #pm %.4f GeV/c^{2}" , a2.getVal(), a2.getError()));
+  paveText->AddText(Form("#chi^{2}/dof = %.2f", chi2_new));
   //paveText->AddText(Form("slope = %.5f #pm %.5f " , lambda.getVal(), lambda.getError()));                                  
   //paveText->AddText(Form("sigma1 = %.5f #pm %.5f GeV", sigma1.getVal(), sigma1.getError()));
   //paveText->AddText(Form("sigma2 = %.5f #pm %.5f GeV", sigma2.getVal(), sigma2.getError()));
   //paveText->AddText(Form("frac = %.5f #pm %.5f ", sigM_frac.getVal(), sigM_frac.getError()));
-  paveText->AddText(Form("a_{0} = %.5f #pm %.5f ", a0.getVal(), a0.getError()));
-  paveText->AddText(Form("a_{1} = %.5f #pm %.5f ", a1.getVal(), a1.getError()));
-  paveText->AddText(Form("a_{2} = %.5f #pm %.5f ", a2.getVal(), a2.getError()));
-  paveText->AddText(Form("#chi^{2}/dof = %.2f", chi2_new));
+
 
   //double s1 = sigma.getVal();
   //double s2 = sigma2.getVal();
@@ -185,6 +183,15 @@ void fit_dikaon_mass_f2prime_v2(){
   //double effSig = sqrt(f*f*s1*s1 + (1-f)*(1-f)*s2*s2);
   //cout << "Sigma (total) = " << effSig << endl;
   
+  if (fitres != NULL){
+    if ((fitres->covQual() == 3) && (fitres->status() == 0)){
+      if (paveText != NULL) paveText->AddText("Fit Status: GOOD");
+    } else {
+      if (paveText != NULL) paveText->AddText("Fit Status: BAD");
+    }
+  }
+
+ 
   paveText->Draw();
 
 
