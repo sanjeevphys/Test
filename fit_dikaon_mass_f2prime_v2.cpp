@@ -56,7 +56,7 @@ void fit_dikaon_mass_f2prime_v2(){
   //TCut c2 = "( Mumumass > (3.096-3*Mumumasserr) && Mumumass < 3.096+3*Mumumasserr )";
   TCut c2 = "Mumumass > 2.95 && Mumumass < 3.3";
   ////TCut c3 = "( Mumumass < (3.686 - 3.5*Mumumasserr) || Mumumass > (3.686 + 3.5*Mumumasserr) )";
-  TCut c3 = "Phimass>1.04 && Phimass<1.2";
+  TCut c3 = "Phimass>1.3 && Phimass<1.8";
   /////if (decayMode=decayMode[1]) TCut c3 = "Phimass>1.4 && Phimass<1.7";
   ///if (decayMode=decayMode[0]) TCut c3 = "Phimass>1.01 && Phimass<1.03";
   //TCut c3 = "Phimass>1.01 && Phimass<1.03";
@@ -69,7 +69,7 @@ void fit_dikaon_mass_f2prime_v2(){
   TCut c10 = "Blxysig>8.5";
   TCut c11 = "Triggers==1";
 
-  TCut cutTotal = c1 && c2 && c4 && c6 && c7 && c8 && c9 && c10 && c11;
+  TCut cutTotal = c1 && c2 && c3 && c4 && c6 && c7 && c8 && c9 && c10 && c11;
 
   RooDataSet *redData = (RooDataSet*)data.reduce(cutTotal);
   ///RooDataSet *redData = (RooDataSet*)data.reduce(c1&&c2);
@@ -122,7 +122,7 @@ void fit_dikaon_mass_f2prime_v2(){
   RooFitResult* fitres = model.fitTo(*redData, Extended(true), Save(true), Minos(true) );
 
   
-  /*RooPlot *xframe = Phimass.frame(Title("KK invariant mass"),Bins(30) ); //50
+  RooPlot *xframe = Phimass.frame(Title("KK invariant mass"),Bins(30) ); //50
   redData->plotOn(xframe,RooFit::Name("data"));
   model.plotOn(xframe,RooFit::Name("pdf"));
   double chi2_new = xframe->chiSquare();
@@ -205,7 +205,7 @@ void fit_dikaon_mass_f2prime_v2(){
   mark->Draw();
 
 
-  c->Update();*/
+  c->Update();
   //c->SaveAs("Bs2JPSiPhi_13TeV_woCDF_w_TRG_OFF_2016B.png");
   //c->SaveAs("Bs2JPSiPhi_13TeV_woCDF_w_TRG_OFF_2016B.pdf");
   //c->SaveAs("Bs2JPSiPhi_13TeV_woCDF_w_TRG_ON_2016G_RUN_278820_JPSI.png");                                                
