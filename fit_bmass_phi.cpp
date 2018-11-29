@@ -1,8 +1,6 @@
 //********************************************************************************************************
-// RooFit program to fit f2' invariant mass 
-//
-//     details of file specific: copied the file fit_dikaon_mass_f2prime_v2.cpp and editing is going 
-//      date : 28 November 2018 v2
+// RooFit program to fit Bs invariant mass in phi region
+//      date : 29 November 2018
 //*******************************************************************************************************
 
 #include <TLatex.h>
