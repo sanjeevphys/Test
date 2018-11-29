@@ -68,7 +68,7 @@ void fit_dikaon_mass_f2prime_v2(){
   TCut c10 = "Blxysig>8.5";*/
 
   // 1st level optimization cuts
-  TCut c4 = "Kmpt>1.5 && Kppt>1.5";
+  TCut c4 = "Kmpt>1.2 && Kppt>1.2";
   TCut c5 = "Kmtrkdcasigbs > 1.8 && Kptrkdcasigbs > 1.7";
   TCut c6 = "Bvtxcl>0.06";
   TCut c7 = "abs(Bctau)>0.02";
