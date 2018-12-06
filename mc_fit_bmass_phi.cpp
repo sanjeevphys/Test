@@ -84,9 +84,9 @@ void mc_fit_bmass_phi(){
   ///RooDataSet *redData = (RooDataSet*)data.reduce(c1&&c2);
  
 
-  RooRealVar  mean("mean","mean of the gaussians", 5.366, 5.3, 5.4);
+  RooRealVar  mean("mean","mean of the gaussians", 5.366, 5.3, 5.5);
   RooRealVar  sigma("sigma","sigma of the gaussian", 0.025, 0.005, 1.);
-  RooRealVar  sigma2("sigma2","sigma of the gaussian2", 0.065, 0.01, .5);
+  RooRealVar  sigma2("sigma2","sigma of the gaussian2", 0.065, 0.001, .5);
   RooRealVar  width("width","width", 0.05, 0., 2.);
   //RooGaussian  sigG("sigG","signal component-1", Bmass, mean, sigma);
   //RooVoigtian  sigG("sigG","signal component-1", Bmass, mean, width, sigma);
