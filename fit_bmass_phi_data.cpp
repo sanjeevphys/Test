@@ -7,7 +7,7 @@
 #include <TString.h>
 #include <TLegend.h>
 
-void fit_bmass_phi(){
+void fit_bmass_phi_data(){
 
 
   gSystem->Load("libRooFit");
