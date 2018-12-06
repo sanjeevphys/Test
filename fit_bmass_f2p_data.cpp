@@ -7,7 +7,7 @@
 #include <TString.h>
 #include <TLegend.h>
 
-void fit_bmass_f2prime_data(){
+void fit_bmass_f2p_data(){
 
 
   gSystem->Load("libRooFit");
