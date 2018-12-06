@@ -8,7 +8,7 @@
 #include <TString.h>
 #include <TLegend.h>
 
-void fit_dikaon_mass_f2prime_v2(){
+void fit_dikaon_mass_f2prime_data(){
 
   gSystem->Load("libRooFit");
   using namespace RooFit;
