@@ -9,7 +9,7 @@
 #include <TString.h>
 #include <TLegend.h>
 
-void mc_fit_bmass_phi(){
+void fit_bmass_phi_mc(){
 
 
   gSystem->Load("libRooFit");
