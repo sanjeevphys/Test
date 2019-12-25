@@ -1,0 +1,4 @@
+# This line is comment, this file is referenced elsewhere
+file '/path/to/file1'
+file '/path/to/file2'
+file '/path/to/file3'
